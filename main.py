@@ -4,22 +4,30 @@ import string
 from pathlib import Path
 
 class Bank:
-    database = 'info.json'
-    info = []
+    database = 'data.json'
+    data = []
 
     try:
         if Path(database).exists():
             with open(database) as fs:
-                info = json.loads(fs.read()) #Converts JSON string to Python object using json.loads()
+                data = json.loads(fs.read()) #Converts JSON string to Python object using json.loads()
         else:
             print("no such file exists")
     except Exception as err:
         print(f"an exception occured as {err}")
 
-    @staticmethod
-    def update():
-        with open(Bank.database, 'w') as fs:
-            fs.write(json.dumps(Bank.info))
+    @classmethod
+    def __update(cls):
+        with open(Bank.database,'w') as fs:
+            fs.write(json.dumps(Bank.data))
+
+    @classmethod
+    def __accountgenerator(cls):
+        alpha = random.choices(string.ascii_letters, k=3)
+        num = random.choices(string.digits, k=5) 
+        id = alpha + num
+        random.shuffle(id) #shuffle gives a list
+        return "".join(id)
 
     def createaccount(self):
         info = {
@@ -27,7 +35,7 @@ class Bank:
             "age" : int(input("Tell your age: ")),
             "email" : input("Tell your email: "),
             "pin" : int(input("Tell your 4 number pin: ")),
-            "accountNo" : 1230,
+            "accountNo" : Bank.__accountgenerator(),
             "balance" : 0
         }
         if info['age'] < 18 or len(str(info['pin'])) != 4:
@@ -40,7 +48,7 @@ class Bank:
 
             Bank.data.append(info)
         
-            Bank.update()
+            Bank.__update()
 
 user = Bank()
 print("press 1 for creating an account")
