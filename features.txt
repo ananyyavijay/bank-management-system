@@ -1,0 +1,11 @@
+1. bank account
+2. deposit money
+3. withdraw money
+4. details
+5. upadte details
+7. delete account
+
+main.py:
+data = [] :dummy data file
+data.append(info) : creates dict which carry all the infos
+update: upadtes all the dummy data into data.json 
